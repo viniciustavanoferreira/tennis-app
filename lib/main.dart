@@ -113,7 +113,7 @@ class _MyHomePageState extends State<MyHomePage> {
             // ),
             SizedBox(height: 45.0),
                     emailField,
-            SizedBox(height: 25.0),
+            SizedBox(height: 30.0),
                     passwordField,
             // Text(
             //   '$_counter',
