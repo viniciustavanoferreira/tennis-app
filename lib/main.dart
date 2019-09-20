@@ -111,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
             // Text(
             //   'You have pushed the button this many times:',
             // ),
-            SizedBox(height: 45.0),
+            SizedBox(height: 44.0),
                     emailField,
             SizedBox(height: 30.0),
                     passwordField,
