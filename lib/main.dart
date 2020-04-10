@@ -7,7 +7,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Flutter APP',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -60,21 +60,20 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     final emailField = TextField(
-          obscureText: false,
-          decoration: InputDecoration(
-              contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
-              hintText: "Email",
-              border:
-                  OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
-        );
-      
+      obscureText: false,
+      decoration: InputDecoration(
+          contentPadding: EdgeInsets.fromLTRB(20.0, 15.0, 20.0, 15.0),
+          hintText: "Email",
+          border:
+              OutlineInputBorder(borderRadius: BorderRadius.circular(32.0))),
+    );
+
     final passwordField = TextField(
       obscureText: true,
       decoration: InputDecoration(
-        contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
-        hintText: "Password",
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(32))
-      ),
+          contentPadding: EdgeInsets.fromLTRB(20, 15, 20, 15),
+          hintText: "Password",
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(32))),
     );
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
@@ -112,9 +111,9 @@ class _MyHomePageState extends State<MyHomePage> {
             //   'You have pushed the button this many times:',
             // ),
             SizedBox(height: 44.0),
-                    emailField,
+            emailField,
             SizedBox(height: 30.0),
-                    passwordField,
+            passwordField,
             // Text(
             //   '$_counter',
             //   style: Theme.of(context).textTheme.display1,
