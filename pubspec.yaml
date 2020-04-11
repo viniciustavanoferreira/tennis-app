@@ -70,3 +70,20 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+  assets:
+    - assets/logo_amarelo_32x.png
+    - assets/logo_amarelo_48x.png
+    - assets/logo_amarelo_64x.png
+    - assets/logo_amarelo_96x.png
+    - assets/logo_amarelo_128x.png
+    - assets/logo_amarelo_256x.png
+    - assets/logo_amarelo.png
+    - assets/logo_branco.png
+    - assets/logo_verde_32x.png
+    - assets/logo_verde_48x.png
+    - assets/logo_verde_64x.png
+    - assets/logo_verde_96x.png
+    - assets/logo_verde_128x.png
+    - assets/logo_verde_256x.png
+    - assets/logo_verde.png
+
