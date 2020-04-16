@@ -1,3 +1,6 @@
+import 'package:controle_financeiro_pessoal/model/service.dart';
+import 'package:controle_financeiro_pessoal/services/apiService.dart';
+import 'package:controle_financeiro_pessoal/services/loginAPIService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -9,6 +12,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
+  TextEditingController email = new TextEditingController();
+  TextEditingController password = new TextEditingController();
+
   @override
   void initState() {
     SystemChrome.setEnabledSystemUIOverlays([]);
@@ -26,7 +33,7 @@ class _LoginPageState extends State<LoginPage> {
               height: MediaQuery.of(context).size.height/2.5,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  begin: Alignment.topCenter,
+                  begin: Alignment.topCenter, 
                   end: Alignment.bottomCenter,
                   colors: [
                     Color(0xFFf45d27),
@@ -94,6 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                       ]
                     ),
                     child: TextField(
+                      controller: email,
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         icon: Icon(Icons.email,
@@ -123,6 +131,7 @@ class _LoginPageState extends State<LoginPage> {
                         ]
                     ),
                     child: TextField(
+                      controller: password,
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         icon: Icon(Icons.vpn_key,
@@ -163,20 +172,33 @@ class _LoginPageState extends State<LoginPage> {
                       )
                     ),
                     child: Center(
-                      child: Text('Login'.toUpperCase(),
+                      child: RaisedButton(
+                        child: Text('Login'.toUpperCase(),
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold
                         ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
+                      ), onPressed: () {
+                        _checkLoginCredentials(email, password);
+                                              },
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          }
+                        
+                          void _checkLoginCredentials(TextEditingController email, TextEditingController password) {
+                            
+                            LoginAPIService loginAPIService = LoginAPIService();
+                            Service service = Service(loginAPIService);
+                            // TO-DO: create login body accordingly.
+                            //service.post(body);
+
+                          }
 }
