@@ -11,7 +11,7 @@ class UserAPIService implements APIService{
   @override
   HttpClient httpClient;
 
-  UserAPIService({this.httpClient});
+  UserAPIService(this.httpClient);
 
   @override
   Future<String> post(Map body) async {
