@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:controle_financeiro_pessoal/model/service.dart';
 import 'package:controle_financeiro_pessoal/services/apiService.dart';
 import 'package:controle_financeiro_pessoal/services/loginAPIService.dart';
@@ -194,8 +196,8 @@ class _LoginPageState extends State<LoginPage> {
                           }
                         
                           void _checkLoginCredentials(TextEditingController email, TextEditingController password) {
-                            
-                            LoginAPIService loginAPIService = LoginAPIService();
+                            HttpClient httpClient = new HttpClient();
+                            LoginAPIService loginAPIService = LoginAPIService(httpClient);
                             Service service = Service(loginAPIService);
                             // TO-DO: create login body accordingly.
                             //service.post(body);
