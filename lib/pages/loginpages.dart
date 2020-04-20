@@ -1,4 +1,4 @@
-import 'package:controle_financeiro_pessoal/model/service.dart';
+import 'package:tennis_play_all/model/service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -160,18 +160,25 @@ class _LoginPageState extends State<LoginPage> {
       TextEditingController email, TextEditingController password) {
     Service service = Service();
     //TO-DO : instanciar usuário baseado no JSON retornado, além de tratar exceptions e httpReturnCode.
-    Future<String> bodyResponse = service.post(this._loginToString(email, password), "/auth/login");
+    Future<String> bodyResponse =
+        service.post(this._loginToString(email, password), "/auth/login");
   }
 
   //TO-DO : refatorar essas implementações abaixo.
-  Map<String, dynamic> _loginToJson(TextEditingController email, TextEditingController password) {
+  Map<String, dynamic> _loginToJson(
+      TextEditingController email, TextEditingController password) {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['user_email'] = email.text;
-    data['user_login'] = password.text;
+    data['user_login'] = email.text;
+    data['user_password'] = password.text;
     return data;
   }
 
-  String _loginToString(TextEditingController email, TextEditingController password) {
-    return ('{"user_login": "' + email.text + '", "user_password": "' + password.text + '"}');
+  String _loginToString(
+      TextEditingController email, TextEditingController password) {
+    return ('{"user_login": "' +
+        email.text +
+        '", "user_password": "' +
+        password.text +
+        '"}');
   }
 }
