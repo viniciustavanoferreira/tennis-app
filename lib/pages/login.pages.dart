@@ -1,3 +1,4 @@
+import 'package:controle_financeiro_pessoal/model/service.dart';
 import 'package:tennis_play_all/model/service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -236,7 +237,7 @@ class _LoginPageState extends State<LoginPage> {
 
   void _checkLoginCredentials(
       TextEditingController email, TextEditingController password) {
-    Service service = Service();
+    Service service = Service.instance;
     //TO-DO : instanciar usuário baseado no JSON retornado, além de tratar exceptions e httpReturnCode.
     Future<String> bodyResponse =
         service.post(this._loginToString(email, password), "/auth/login");
