@@ -26,10 +26,10 @@ void main() {
   });
 
 //  Feature: Invoke RESTful APIs from Flutter
-// Scenario: Client requests to authenticate user and email
-//    Given I (client class) have to authenticate user
-//      and I have to authenticate email
-//     When I (client class) ask to backend authenticate user and email
+// Scenario: Client requests to authenticate the email and password
+//    Given I (client class) have to authenticate the email
+//      and I have to authenticate password
+//     When I (client class) ask for the backend to authenticate the email and password
 //     Then I (client class) should receive the user's data.  
   test('Should return data regarding the user (approve access - POST Login)', (){
     
