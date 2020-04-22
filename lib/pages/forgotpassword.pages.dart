@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'registeruser.pages.dart';
-import 'login.pages.dart';
+import 'requiredcode.pages.dart';
 
-class WelcomePage extends StatelessWidget {
+class ForgotPassword extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,56 +28,105 @@ class WelcomePage extends StatelessWidget {
                     Color(0xFF64DD17),
                   ],
                 ),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(50),
+                  bottomRight: Radius.circular(50),
+                ),
               ),
               child: Column(children: <Widget>[
-                SizedBox(
-                  height: 128,
-                  width: 128,
-                  child: Image.asset("assets/logo_branco.png"),
+                Container(
+                  height: 120,
+                  width: 120,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 4.0,
+                      color: const Color(0xFFFFFFFF),
+                    ),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(60),
+                    ),
+                  ),
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Icon(
+                      Icons.https,
+                      size: 90,
+                      color: Colors.white,
+                    ),
+                  ),
                 ),
                 SizedBox(
                   height: 60,
                 ),
                 SizedBox(
-                  height: 200,
+                  height: 30,
                   child: Text(
-                    "UMA REDE DE CLUBES\nE JOGADORES DE TENNIS",
+                    "Esqueceu sua Senha?",
                     style: TextStyle(
-                      fontSize: 32,
+                      fontSize: 28,
                       fontWeight: FontWeight.w500,
                       color: Colors.white,
                     ),
                   ),
                 ),
+                SizedBox(
+                  height: 10,
+                ),
+                SizedBox(
+                  height: 100,
+                  child: Text(
+                    "Por favor, informe o e-mail associado a sua conta que enviaremos um link para o mesmo com as instruções para restauração de sua conta",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w300,
+                      color: Colors.white,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
               ]),
             ),
             Container(
-              height: MediaQuery.of(context).size.height * 0.4,
-              width: 128,
-              padding: EdgeInsets.only(
-                top: 20,
-                left: 40,
-                right: 40,
-              ),
               color: Colors.white,
+              height: MediaQuery.of(context).size.height * 0.4,
               child: Column(
                 children: <Widget>[
                   SizedBox(
-                    height: 30,
-                    child: Text(
-                      "ENCONTRE OUTROS JOGADORES",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.grey,
+                    height: 50,
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width / 1.2,
+                    height: 45,
+                    padding:
+                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(50)),
+                      color: Colors.white,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 5,
+                        ),
+                      ],
+                    ),
+                    child: TextField(
+                      //controller: email,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        icon: Icon(
+                          Icons.email,
+                          color: Colors.grey,
+                        ),
+                        hintText: 'Email',
                       ),
                     ),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 30,
                   ),
                   Container(
-                    height: 60,
+                    height: 50,
+                    width: MediaQuery.of(context).size.width / 1.2,
                     alignment: Alignment.centerLeft,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -100,7 +148,7 @@ class WelcomePage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: <Widget>[
                             Text(
-                              "Cadastre-se",
+                              "Solicitar Link",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20,
@@ -111,58 +159,18 @@ class WelcomePage extends StatelessWidget {
                           ],
                         ),
                         onPressed: () {
+                          // colocar o código que manda a solicitação do link
+
+                          // Abre a pagina para digitar o código recebido no link
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => RegisterUser(),
+                              builder: (context) => RequiredCodePage(),
                             ),
                           );
                         },
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  SizedBox(
-                    height: 20,
-                    child: Text(
-                      "OU",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.grey,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    height: 30,
-                    alignment: Alignment.center,
-                    child: FlatButton(
-                      child: Text(
-                        "ENTRAR",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 30,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.green,
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => LoginPage(),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                    height: 10,
                   ),
                 ],
               ),
