@@ -9,7 +9,7 @@ class Service {
   Service._();
 
   static Service get instance {
-    return _instance ?? Service._();
+    return _instance ??= Service._();
   }
 
   Future<String> post(String body, String urn) async {
