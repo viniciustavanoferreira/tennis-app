@@ -12,6 +12,24 @@ class Service {
     return _instance ??= Service._();
   }
 
+  // TO-DO: necessário escrever testes unitários após correção das APIs no CodeIgniter/ MySQL!.
+  Future<String> get(String urn) async {
+    http.Response response = await http.get(_url + urn);
+    return (response.body);
+  }
+
+  // TO-DO: necessário escrever testes unitários após correção das APIs no CodeIgniter/ MySQL!.
+  Future<String> delete(String urn) async {
+    http.Response response = await http.get(_url + urn);
+    return (response.body);
+  }
+
+  // TO-DO: necessário escrever testes unitários após correção das APIs no CodeIgniter/ MySQL!.
+  Future<String> put(String body, String urn) async {
+    http.Response response = await http.post(_url + urn, headers: _createHeader(), body: body);
+    return (response.body);
+  }
+  
   Future<String> post(String body, String urn) async {
     http.Response response = await http.post(_url + urn, headers: _createHeader(), body: body);
     return (response.body);
