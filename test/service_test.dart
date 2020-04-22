@@ -48,4 +48,23 @@ void main() {
 
   });
 
+// TO-DO - Implementar os testes unitários para os demais métodos da classe Service. Atualmente as APIs estão com problema (CodeIgniter/ MySQL).
+//  Feature: Invoke RESTful APIs from Flutter
+// Scenario: Client requests to get resource's data
+//    Given I (client class) have to process resource's data
+//     When I (client class) ask for a specific resource's data
+//     Then I (client class) should receive the resource's data.  
+  test('Should return data regarding the resource (GET)', (){
+    
+    // Setup
+
+    // Exercise
+
+    // Verify
+
+    // TearDown
+
+  });
+
+
 }
