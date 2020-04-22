@@ -236,7 +236,7 @@ class _LoginPageState extends State<LoginPage> {
 
   void _checkLoginCredentials(
       TextEditingController email, TextEditingController password) {
-    Service service = Service();
+    Service service = Service.instance;
     //TO-DO : instanciar usuário baseado no JSON retornado, além de tratar exceptions e httpReturnCode.
     Future<String> bodyResponse =
         service.post(this._loginToString(email, password), "/auth/login");
