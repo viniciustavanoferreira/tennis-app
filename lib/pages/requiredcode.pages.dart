@@ -107,13 +107,7 @@ class RequiredCodePage extends StatelessWidget {
                             top: 4, left: 16, right: 16, bottom: 4),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.all(Radius.circular(50)),
-                          color: Colors.white,
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 5,
-                            ),
-                          ],
+                          color: Colors.green[50],
                         ),
                         child: TextField(
                           //controller: email,

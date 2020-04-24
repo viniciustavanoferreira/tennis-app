@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'phone.pages.dart';
 
 class RegisterUser extends StatefulWidget {
   @override
@@ -9,30 +10,52 @@ class RegisterUser extends StatefulWidget {
 }
 
 class _RegisterUserState extends State<RegisterUser> {
+
+  //inicio do código para se usar o dropdownbutton
   List<dynamic> listGender = ["Selecione o Genero", "Masculino", "Feminino"];
-  List<DropdownMenuItem<String>> dropDownMenuItems;
+  List<dynamic> listPlayerLevel = ["Selecione nivel jogador","ITN 10.1 a 10.3 - Iniciante", "ITN 10 a 8 - Recreativo", "ITN 7 a 5 - Intermediario", "ITN 4 a 2 - Avançado", "ITN 1 - Alto Desempenho"];
+  List<DropdownMenuItem<String>> dropDownMenuItemsGender;
+  List<DropdownMenuItem<String>> dropDownMenuItemsPlayerLevel;
   String currentGender;
+  String currentPlayerLevel;
 
   @override
   void initState() {
-    dropDownMenuItems = getDropDownMenuItems();
-    currentGender = dropDownMenuItems[0].value;
+    dropDownMenuItemsGender = getDropDownMenuItemsGender();
+    dropDownMenuItemsPlayerLevel = getDropDownMenuItemsPlayer();
+    currentGender = dropDownMenuItemsGender[0].value;
+    currentPlayerLevel = dropDownMenuItemsPlayerLevel[0].value;
     super.initState();
   }
-
-  void changedDropDownItem(String selectedGender) {
+  
+  void changedDropDownItemGender(String selectedGender) {
     setState(() {
       currentGender = selectedGender;
     });
   }
-
-  List<DropdownMenuItem<String>> getDropDownMenuItems() {
-    List<DropdownMenuItem<String>> items = new List();
-    for (String gender in listGender) {
-      items.add(new DropdownMenuItem(value: gender, child: new Text(gender)));
-    }
-    return items;
+  
+  void changedDropDownItemPlayer(String selectedPlayerLevel) {
+    setState(() {
+      currentPlayerLevel = selectedPlayerLevel;
+    });
   }
+  
+  List<DropdownMenuItem<String>> getDropDownMenuItemsGender() {
+    List<DropdownMenuItem<String>> itemsGender = new List();
+    for (String gender in listGender) {
+      itemsGender.add(new DropdownMenuItem(value: gender, child: new Text(gender)));
+    }
+    return itemsGender;
+  }
+  
+  List<DropdownMenuItem<String>> getDropDownMenuItemsPlayer() {
+    List<DropdownMenuItem<String>> itemsPlayerLevel = new List();
+    for (String playerlevel in listPlayerLevel) {
+      itemsPlayerLevel.add(new DropdownMenuItem(value: playerlevel, child: new Text(playerlevel)));
+    }
+    return itemsPlayerLevel;
+  }
+  //Fim do código para se usar o dropdownbutton
 
   @override
   Widget build(BuildContext context) {
@@ -117,7 +140,7 @@ class _RegisterUserState extends State<RegisterUser> {
                 ),
               ]),
             ),
-
+            // Container do campo genero
             Container(
               width: 128,
               height: MediaQuery.of(context).size.height * 0.9,
@@ -136,21 +159,14 @@ class _RegisterUserState extends State<RegisterUser> {
               child: Column(children: <Widget>[
                 Container(
                   width: MediaQuery.of(context).size.width / 1.2,
-                  height: 50,
+                  height: 50 ,
                   padding: EdgeInsets.only(
                     left: 16,
                     right: 16,
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(50)),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        //color: Colors.black12,
-                        color: Colors.black,
-                        blurRadius: 5,
-                      ),
-                    ],
+                    color: Colors.green[50],
                   ),
                   child: Column(
                     //crossAxisAlignment: CrossAxisAlignment.,
@@ -160,13 +176,13 @@ class _RegisterUserState extends State<RegisterUser> {
                       DropdownButton(
                         isExpanded: true,
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 14,
                           //fontWeight: FontWeight.w700,
                           color: Colors.grey,
                         ),
                         value: currentGender,
-                        items: dropDownMenuItems,
-                        onChanged: changedDropDownItem,
+                        items: dropDownMenuItemsGender,
+                        onChanged: changedDropDownItemGender,
                       ),
                     ],
                   ),
@@ -174,6 +190,39 @@ class _RegisterUserState extends State<RegisterUser> {
                 SizedBox(
                   height: 20,
                 ),
+                //Container do campo Nivel do Jogador
+                Container(
+                  width: MediaQuery.of(context).size.width / 1.2,
+                  height: 50,
+                  padding:
+                      EdgeInsets.only( left: 16, right: 16,),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                    color: Colors.green[50],
+                  ),
+                  child: Column(
+                    //crossAxisAlignment: CrossAxisAlignment.,
+                    //mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.max,
+                    children: <Widget>[
+                      DropdownButton(
+                        isExpanded: true,
+                        style: TextStyle(
+                          fontSize: 14,
+                          //fontWeight: FontWeight.w700,
+                          color: Colors.grey,
+                        ),
+                        value: currentPlayerLevel,
+                        items: dropDownMenuItemsPlayerLevel,
+                        onChanged: changedDropDownItemPlayer,
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                // Container do campo do nome completo 
                 Container(
                   width: MediaQuery.of(context).size.width / 1.2,
                   height: 50,
@@ -181,27 +230,22 @@ class _RegisterUserState extends State<RegisterUser> {
                       EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(50)),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        //color: Colors.black12,
-                        color: Colors.black,
-                        blurRadius: 5,
-                      ),
-                    ],
+                    color: Colors.green[50],
+                    
                   ),
                   child: TextField(
                     //controller: email,
-                    keyboardType: TextInputType.emailAddress,
+                    keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: 'Nome completo',
+                      hintText: 'Nome Completo',
                     ),
                   ),
                 ),
                 SizedBox(
                   height: 20,
                 ),
+                //Contatiner do campo e-mail
                 Container(
                   width: MediaQuery.of(context).size.width / 1.2,
                   height: 50,
@@ -209,27 +253,21 @@ class _RegisterUserState extends State<RegisterUser> {
                       EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(50)),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        //color: Colors.black12,
-                        color: Colors.black,
-                        blurRadius: 5,
-                      ),
-                    ],
+                    color: Colors.green[50],
                   ),
                   child: TextField(
                     //controller: email,
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: 'Nome completo',
+                      hintText: 'E-mail',
                     ),
                   ),
                 ),
                 SizedBox(
                   height: 20,
                 ),
+                // Container do campo data de nascimento
                 Container(
                   width: MediaQuery.of(context).size.width / 1.2,
                   height: 50,
@@ -237,27 +275,21 @@ class _RegisterUserState extends State<RegisterUser> {
                       EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(50)),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        //color: Colors.black12,
-                        color: Colors.black,
-                        blurRadius: 5,
-                      ),
-                    ],
+                    color: Colors.green[50],
                   ),
                   child: TextField(
                     //controller: email,
-                    keyboardType: TextInputType.emailAddress,
+                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: 'Nome completo',
+                      hintText: 'Data de Nascimento',
                     ),
                   ),
                 ),
                 SizedBox(
                   height: 20,
                 ),
+                // COntainer do campo de Endereço
                 Container(
                   width: MediaQuery.of(context).size.width / 1.2,
                   height: 50,
@@ -265,27 +297,21 @@ class _RegisterUserState extends State<RegisterUser> {
                       EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(50)),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        //color: Colors.black12,
-                        color: Colors.black,
-                        blurRadius: 5,
-                      ),
-                    ],
+                    color: Colors.green[50],
                   ),
                   child: TextField(
                     //controller: email,
-                    keyboardType: TextInputType.emailAddress,
+                    keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: 'Nome completo',
+                      hintText: 'Endereço Completo',
                     ),
                   ),
                 ),
                 SizedBox(
                   height: 20,
                 ),
+                //Container do campo de CEP
                 Container(
                   width: MediaQuery.of(context).size.width / 1.2,
                   height: 50,
@@ -293,27 +319,21 @@ class _RegisterUserState extends State<RegisterUser> {
                       EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(50)),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        //color: Colors.black12,
-                        color: Colors.black,
-                        blurRadius: 5,
-                      ),
-                    ],
+                    color: Colors.green[50],
                   ),
                   child: TextField(
                     //controller: email,
-                    keyboardType: TextInputType.emailAddress,
+                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: 'Nome completo',
+                      hintText: 'CEP',
                     ),
                   ),
                 ),
                 SizedBox(
                   height: 20,
                 ),
+                //Container do campo de Senha
                 Container(
                   width: MediaQuery.of(context).size.width / 1.2,
                   height: 50,
@@ -321,49 +341,15 @@ class _RegisterUserState extends State<RegisterUser> {
                       EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(50)),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        //color: Colors.black12,
-                        color: Colors.black,
-                        blurRadius: 5,
-                      ),
-                    ],
+                    color: Colors.green[50],
                   ),
                   child: TextField(
                     //controller: email,
-                    keyboardType: TextInputType.emailAddress,
+                    obscureText: true,
+                    keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       border: InputBorder.none,
-                      hintText: 'Nome completo',
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width / 1.2,
-                  height: 50,
-                  padding:
-                      EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        //color: Colors.black12,
-                        color: Colors.black,
-                        blurRadius: 5,
-                      ),
-                    ],
-                  ),
-                  child: TextField(
-                    //controller: email,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: 'Nome completo',
+                      hintText: 'Nova senha',
                     ),
                   ),
                 ),
@@ -379,37 +365,66 @@ class _RegisterUserState extends State<RegisterUser> {
                   ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(50)),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        //color: Colors.black12,
-                        color: Colors.black,
-                        blurRadius: 5,
-                      ),
-                    ],
+                    color: Colors.green[50],
                   ),
-                  child: Column(
-                    //crossAxisAlignment: CrossAxisAlignment.,
-                    //mainAxisAlignment: MainAxisAlignment.center,
-                    mainAxisSize: MainAxisSize.max,
-                    children: <Widget>[
-                      DropdownButton(
-                        isExpanded: true,
-                        style: TextStyle(
-                          fontSize: 16,
-                          //fontWeight: FontWeight.w700,
-                          color: Colors.grey,
-                        ),
-                        value: currentGender,
-                        items: dropDownMenuItems,
-                        onChanged: changedDropDownItem,
-                      ),
-                    ],
+                  child: TextField(
+                    //controller: email,
+                    obscureText: true,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'Digite a senha novamente',
+                    ),
                   ),
                 ),
                 SizedBox(
                   height: 20,
                 ),
+                Container(
+                    height: 50,
+                    width: MediaQuery.of(context).size.width / 1.2,
+                    alignment: Alignment.centerLeft,
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                        stops: [0.3, 1],
+                        colors: [
+                          Color(0xFF33691E),
+                          Color(0xFF64DD17),
+                        ],
+                      ),
+                      borderRadius: BorderRadius.all(
+                        Radius.circular(10),
+                      ),
+                    ),
+                    child: SizedBox.expand(
+                      child: FlatButton(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              "Avançar",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 20,
+                                color: Colors.white,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PhonePage(),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ),
               ]),
             ),
           ],
