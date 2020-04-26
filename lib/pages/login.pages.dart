@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'home.pages.dart';
 import 'forgotpassword.pages.dart';
+import 'dart:convert';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -24,6 +26,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         child: Column(
           children: <Widget>[
@@ -34,7 +37,10 @@ class _LoginPageState extends State<LoginPage> {
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    stops: [0.3, 1],
+                    stops: [
+                      0.3,
+                      1
+                    ],
                     colors: [
                       Color(0xFF33691E),
                       Color(0xFF64DD17),
@@ -98,8 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                   Container(
                     width: MediaQuery.of(context).size.width / 1.2,
                     height: 45,
-                    padding:
-                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
+                    padding: EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(50)),
                       color: Colors.green[50],
@@ -121,11 +126,10 @@ class _LoginPageState extends State<LoginPage> {
                     width: MediaQuery.of(context).size.width / 1.2,
                     height: 45,
                     margin: EdgeInsets.only(top: 32),
-                    padding:
-                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
+                    padding: EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                     decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(50)),
-                        color: Colors.green[50],
+                      borderRadius: BorderRadius.all(Radius.circular(50)),
+                      color: Colors.green[50],
                     ),
                     child: TextField(
                       controller: password,
@@ -152,7 +156,10 @@ class _LoginPageState extends State<LoginPage> {
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
-                        stops: [0.3, 1],
+                        stops: [
+                          0.3,
+                          1
+                        ],
                         colors: [
                           Color(0xFF33691E),
                           Color(0xFF64DD17),
@@ -178,13 +185,25 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ],
                         ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => HomePage(),
-                            ),
-                          );
+                        onPressed: () async {
+                          if (email.text == "" || password.text == "") {
+                            // TODO: Mudar bodercolor para vermelho para campos não preenchidos
+                            Fluttertoast.showToast(msg: "Preencha as informações de login.");
+                            return;
+                          }
+
+                          // TODO: aplicar animação de espera para o login; desativar botão de logar
+                          var loginStatus = await _checkLoginCredentials(email, password);
+                          if (loginStatus == true) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HomePage(),
+                              ),
+                            );
+                          } else {
+                            Fluttertoast.showToast(msg: "Usuário e/ou senha inválidos.");
+                          }
                         },
                       ),
                     ),
@@ -225,4 +244,25 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+}
+
+_checkLoginCredentials(TextEditingController email, TextEditingController password) async {
+  Service service = Service.instance;
+
+  String body = _loginToString(email.text, password.text);
+  String urn = '/auth/login';
+
+  String bodyResponse = await service.post(body, urn);
+  bool status = json.decode(bodyResponse)['id'] == null ? false : true;
+
+  return status;
+}
+
+String _loginToString(String email, String password) {
+  Map<String, dynamic> mapJson = {
+    'user_login': email,
+    'user_password': password,
+  };
+
+  return jsonEncode(mapJson);
 }
