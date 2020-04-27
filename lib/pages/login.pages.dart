@@ -14,8 +14,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController email = new TextEditingController();
-  TextEditingController password = new TextEditingController();
+  TextEditingController _email = new TextEditingController();
+  TextEditingController _password = new TextEditingController();
+  bool _isEmailValid = true;
+  bool _isPasswordValid = true;
 
   @override
   void initState() {
@@ -110,15 +112,16 @@ class _LoginPageState extends State<LoginPage> {
                       color: Colors.green[50],
                     ),
                     child: TextField(
-                      controller: email,
+                      controller: _email,
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
+                        errorText: _isEmailValid ? null : 'E-mail inválido',
                         border: InputBorder.none,
                         icon: Icon(
                           Icons.email,
                           color: Colors.grey,
                         ),
-                        hintText: 'Email',
+                        hintText: 'E-mail',
                       ),
                     ),
                   ),
@@ -132,10 +135,11 @@ class _LoginPageState extends State<LoginPage> {
                       color: Colors.green[50],
                     ),
                     child: TextField(
-                      controller: password,
+                      controller: _password,
                       obscureText: true,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
+                        errorText: _isPasswordValid ? null : 'Password inválido',
                         border: InputBorder.none,
                         icon: Icon(
                           Icons.vpn_key,
@@ -186,70 +190,82 @@ class _LoginPageState extends State<LoginPage> {
                           ],
                         ),
                         onPressed: () async {
-                          if (email.text == "" || password.text == "") {
-                            // TODO: Mudar bodercolor para vermelho para campos não preenchidos
-                            Fluttertoast.showToast(msg: "Preencha as informações de login.");
-                            return;
-                          }
 
-                          // TODO: aplicar animação de espera para o login; desativar botão de logar
-                          var loginStatus = await _checkLoginCredentials(email, password);
-                          if (loginStatus == true) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => HomePage(),
-                              ),
-                            );
-                          } else {
-                            Fluttertoast.showToast(msg: "Usuário e/ou senha inválidos.");
-                          }
-                        },
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Container(
-                    height: 30,
-                    width: MediaQuery.of(context).size.width / 1.2,
-                    decoration: BoxDecoration(),
-                    alignment: Alignment.centerRight,
-                    child: FlatButton(
-                      child: Text(
-                        "Esqueceu sua senha?",
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.grey,
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ForgotPassword(),
-                          ),
-                        );
-                      },
-                    ),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
-    );
-  }
+                                                      setState(() { 
+                                                        // TO-DO: ou criar um método para cada tratativa, ou implementa o resto que falta das tratativas no mesmo método já criado.
+                                                        _isEmailValid = _validateInput(_email.text);
+                                                        _isPasswordValid = _validateInput(_password.text);
+                                                                  });
+                            
+                                                      // if (_email.text == "" || _password.text == "") {
+                                                      //   // TODO: Mudar bodercolor para vermelho para campos não preenchidos
+                                                      //   Fluttertoast.showToast(msg: "Preencha as informações de login.");
+                                                      //   return;
+                                                      // }
+                            
+                                                      // TODO: aplicar animação de espera para o login; desativar botão de logar
+                                                      var loginStatus = await _checkLoginCredentials(_email, _password);
+                                                      if (loginStatus == true) {
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) => HomePage(),
+                                                          ),
+                                                        );
+                                                      } else {
+                                                        Fluttertoast.showToast(msg: "Usuário e/ou senha inválidos.");
+                                                      }
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                height: 30,
+                                              ),
+                                              Container(
+                                                height: 30,
+                                                width: MediaQuery.of(context).size.width / 1.2,
+                                                decoration: BoxDecoration(),
+                                                alignment: Alignment.centerRight,
+                                                child: FlatButton(
+                                                  child: Text(
+                                                    "Esqueceu sua senha?",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight: FontWeight.w700,
+                                                      color: Colors.grey,
+                                                    ),
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) => ForgotPassword(),
+                                                      ),
+                                                    );
+                                                  },
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              }
+                            
+                              bool _validateInput(String text) {
+                                // TO-DO: além de implementar os retornos, sugiro utilizar REGEX para caracteres especiais, espaços, etc.
+                                return false;
+                              }
 }
 
-_checkLoginCredentials(TextEditingController email, TextEditingController password) async {
+_checkLoginCredentials(TextEditingController _email, TextEditingController _password) async {
   Service service = Service.instance;
 
-  String body = _loginToString(email.text, password.text);
+  String body = _loginToString(_email.text, _password.text);
   String urn = '/auth/login';
 
   String bodyResponse = await service.post(body, urn);
@@ -258,10 +274,10 @@ _checkLoginCredentials(TextEditingController email, TextEditingController passwo
   return status;
 }
 
-String _loginToString(String email, String password) {
+String _loginToString(String _email, String _password) {
   Map<String, dynamic> mapJson = {
-    'user_login': email,
-    'user_password': password,
+    'user_login': _email,
+    'user__password': _password,
   };
 
   return jsonEncode(mapJson);
