@@ -1,4 +1,4 @@
-import 'package:tennis_play_all/model/service.dart';
+import 'package:tennis_play_all/utils/service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'home.pages.dart';
@@ -39,10 +39,7 @@ class _LoginPageState extends State<LoginPage> {
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    stops: [
-                      0.3,
-                      1
-                    ],
+                    stops: [0.3, 1],
                     colors: [
                       Color(0xFF33691E),
                       Color(0xFF64DD17),
@@ -106,7 +103,8 @@ class _LoginPageState extends State<LoginPage> {
                   Container(
                     width: MediaQuery.of(context).size.width / 1.2,
                     height: 45,
-                    padding: EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
+                    padding:
+                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(50)),
                       color: Colors.green[50],
@@ -129,7 +127,8 @@ class _LoginPageState extends State<LoginPage> {
                     width: MediaQuery.of(context).size.width / 1.2,
                     height: 45,
                     margin: EdgeInsets.only(top: 32),
-                    padding: EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
+                    padding:
+                        EdgeInsets.only(top: 4, left: 16, right: 16, bottom: 4),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(50)),
                       color: Colors.green[50],
@@ -137,9 +136,10 @@ class _LoginPageState extends State<LoginPage> {
                     child: TextField(
                       controller: _password,
                       obscureText: true,
-                      keyboardType: TextInputType.number,
+                      keyboardType: TextInputType.text,
                       decoration: InputDecoration(
-                        errorText: _isPasswordValid ? null : 'Password inválido',
+                        errorText:
+                            _isPasswordValid ? null : 'Password inválido',
                         border: InputBorder.none,
                         icon: Icon(
                           Icons.vpn_key,
@@ -160,10 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                       gradient: LinearGradient(
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
-                        stops: [
-                          0.3,
-                          1
-                        ],
+                        stops: [0.3, 1],
                         colors: [
                           Color(0xFF33691E),
                           Color(0xFF64DD17),
@@ -190,79 +187,100 @@ class _LoginPageState extends State<LoginPage> {
                           ],
                         ),
                         onPressed: () async {
+                          setState(() {
+                            // TO-DO: ou criar um método para cada tratativa, ou implementa o resto que falta das tratativas no mesmo método já criado.
+                            // TO-DO: onChange, delete error msg.
+                            // TO-DO: dimensionamento dos widgets comprometidos.  
+                            _isEmailValid = _validateEmail(_email.text); 
+                            _isPasswordValid = _validatePassword(_password.text);
+                          });
 
-                                                      setState(() { 
-                                                        // TO-DO: ou criar um método para cada tratativa, ou implementa o resto que falta das tratativas no mesmo método já criado.
-                                                        _isEmailValid = _validateInput(_email.text);
-                                                        _isPasswordValid = _validateInput(_password.text);
-                                                                  });
-                            
-                                                      // if (_email.text == "" || _password.text == "") {
-                                                      //   // TODO: Mudar bodercolor para vermelho para campos não preenchidos
-                                                      //   Fluttertoast.showToast(msg: "Preencha as informações de login.");
-                                                      //   return;
-                                                      // }
-                            
-                                                      // TODO: aplicar animação de espera para o login; desativar botão de logar
-                                                      var loginStatus = await _checkLoginCredentials(_email, _password);
-                                                      if (loginStatus == true) {
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) => HomePage(),
-                                                          ),
-                                                        );
-                                                      } else {
-                                                        Fluttertoast.showToast(msg: "Usuário e/ou senha inválidos.");
-                                                      }
-                                                    },
-                                                  ),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: 30,
-                                              ),
-                                              Container(
-                                                height: 30,
-                                                width: MediaQuery.of(context).size.width / 1.2,
-                                                decoration: BoxDecoration(),
-                                                alignment: Alignment.centerRight,
-                                                child: FlatButton(
-                                                  child: Text(
-                                                    "Esqueceu sua senha?",
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight: FontWeight.w700,
-                                                      color: Colors.grey,
-                                                    ),
-                                                  ),
-                                                  onPressed: () {
-                                                    Navigator.push(
-                                                      context,
-                                                      MaterialPageRoute(
-                                                        builder: (context) => ForgotPassword(),
-                                                      ),
-                                                    );
-                                                  },
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              }
-                            
-                              bool _validateInput(String text) {
-                                // TO-DO: além de implementar os retornos, sugiro utilizar REGEX para caracteres especiais, espaços, etc.
-                                return false;
-                              }
+                          // if (_email.text == "" || _password.text == "") {
+                          //   Fluttertoast.showToast(msg: "Preencha as informações de login.");
+                          //   return;
+                          // }
+
+                          // TODO: aplicar animação de espera para o login; desativar botão de logar
+                          var loginStatus =
+                              await _checkLoginCredentials(_email, _password);
+                          if (loginStatus == true) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => HomePage(),
+                              ),
+                            );
+                          } else {
+                            Fluttertoast.showToast(
+                                msg: "Usuário e/ou senha inválidos.");
+                          }
+                        },
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Container(
+                    height: 30,
+                    width: MediaQuery.of(context).size.width / 1.2,
+                    decoration: BoxDecoration(),
+                    alignment: Alignment.centerRight,
+                    child: FlatButton(
+                      child: Text(
+                        "Esqueceu sua senha?",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ForgotPassword(),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  bool _validateEmail(String text) {
+    // TO-DO: case sensitive - adapt it.
+    RegExp regex = new RegExp(r"^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$");
+    if(regex.hasMatch(text)){
+      return true;
+    } else {
+      return false;
+    }
+
+  }
+
+  bool _validatePassword(String text) {
+    // TO-DO: try to avoid instantiate twice a regex's object.
+    // Mínimo de 8 carac., ao menos 1 núm., 1 letra e 1 carac. especial.
+    RegExp regex = new RegExp(r"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$");
+    if(regex.hasMatch(text)){
+      return true;
+    } else {
+      return false;
+    }    
+  }
+
 }
 
-_checkLoginCredentials(TextEditingController _email, TextEditingController _password) async {
+_checkLoginCredentials(
+    TextEditingController _email, TextEditingController _password) async {
   Service service = Service.instance;
 
   String body = _loginToString(_email.text, _password.text);
