@@ -14,8 +14,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController email = new TextEditingController();
-  TextEditingController password = new TextEditingController();
+  TextEditingController _email = new TextEditingController();
+  TextEditingController _password = new TextEditingController();
 
   @override
   void initState() {
@@ -110,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                       color: Colors.green[50],
                     ),
                     child: TextField(
-                      controller: email,
+                      controller: _email,
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                         border: InputBorder.none,
@@ -118,7 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                           Icons.email,
                           color: Colors.grey,
                         ),
-                        hintText: 'Email',
+                        hintText: '_Email',
                       ),
                     ),
                   ),
@@ -132,7 +132,7 @@ class _LoginPageState extends State<LoginPage> {
                       color: Colors.green[50],
                     ),
                     child: TextField(
-                      controller: password,
+                      controller: _password,
                       obscureText: true,
                       keyboardType: TextInputType.number,
                       decoration: InputDecoration(
@@ -141,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
                           Icons.vpn_key,
                           color: Colors.grey,
                         ),
-                        hintText: 'Password',
+                        hintText: '_Password',
                       ),
                     ),
                   ),
@@ -186,14 +186,14 @@ class _LoginPageState extends State<LoginPage> {
                           ],
                         ),
                         onPressed: () async {
-                          if (email.text == "" || password.text == "") {
+                          if (_email.text == "" || _password.text == "") {
                             // TODO: Mudar bodercolor para vermelho para campos não preenchidos
                             Fluttertoast.showToast(msg: "Preencha as informações de login.");
                             return;
                           }
 
                           // TODO: aplicar animação de espera para o login; desativar botão de logar
-                          var loginStatus = await _checkLoginCredentials(email, password);
+                          var loginStatus = await _checkLoginCredentials(_email, _password);
                           if (loginStatus == true) {
                             Navigator.push(
                               context,
@@ -246,10 +246,10 @@ class _LoginPageState extends State<LoginPage> {
   }
 }
 
-_checkLoginCredentials(TextEditingController email, TextEditingController password) async {
+_checkLoginCredentials(TextEditingController _email, TextEditingController _password) async {
   Service service = Service.instance;
 
-  String body = _loginToString(email.text, password.text);
+  String body = _loginToString(_email.text, _password.text);
   String urn = '/auth/login';
 
   String bodyResponse = await service.post(body, urn);
@@ -258,10 +258,10 @@ _checkLoginCredentials(TextEditingController email, TextEditingController passwo
   return status;
 }
 
-String _loginToString(String email, String password) {
+String _loginToString(String _email, String _password) {
   Map<String, dynamic> mapJson = {
-    'user_login': email,
-    'user_password': password,
+    'user_login': _email,
+    'user__password': _password,
   };
 
   return jsonEncode(mapJson);
