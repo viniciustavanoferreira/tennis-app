@@ -10,48 +10,56 @@ class RegisterUser extends StatefulWidget {
 }
 
 class _RegisterUserState extends State<RegisterUser> {
-
   //inicio do código para se usar o dropdownbutton
-  List<dynamic> listGender = ["Selecione o Genero", "Masculino", "Feminino"];
-  List<dynamic> listPlayerLevel = ["Selecione nivel jogador","ITN 10.1 a 10.3 - Iniciante", "ITN 10 a 8 - Recreativo", "ITN 7 a 5 - Intermediario", "ITN 4 a 2 - Avançado", "ITN 1 - Alto Desempenho"];
-  List<DropdownMenuItem<String>> dropDownMenuItemsGender;
-  List<DropdownMenuItem<String>> dropDownMenuItemsPlayerLevel;
-  String currentGender;
-  String currentPlayerLevel;
+  List<dynamic> _listGender = ["Selecione o Genero", "Masculino", "Feminino"];
+  List<dynamic> _listPlayerLevel = [
+    "Selecione nivel jogador",
+    "ITN 10.1 a 10.3 - Iniciante",
+    "ITN 10 a 8 - Recreativo",
+    "ITN 7 a 5 - Intermediario",
+    "ITN 4 a 2 - Avançado",
+    "ITN 1 - Alto Desempenho"
+  ];
+  List<DropdownMenuItem<String>> _dropDownMenuItemsGender;
+  List<DropdownMenuItem<String>> _dropDownMenuItemsPlayerLevel;
+  String _currentGender;
+  String _currentPlayerLevel;
 
   @override
   void initState() {
-    dropDownMenuItemsGender = getDropDownMenuItemsGender();
-    dropDownMenuItemsPlayerLevel = getDropDownMenuItemsPlayer();
-    currentGender = dropDownMenuItemsGender[0].value;
-    currentPlayerLevel = dropDownMenuItemsPlayerLevel[0].value;
+    _dropDownMenuItemsGender = getDropDownMenuItemsGender();
+    _dropDownMenuItemsPlayerLevel = getDropDownMenuItemsPlayer();
+    _currentGender = _dropDownMenuItemsGender[0].value;
+    _currentPlayerLevel = _dropDownMenuItemsPlayerLevel[0].value;
     super.initState();
   }
-  
+
   void changedDropDownItemGender(String selectedGender) {
     setState(() {
-      currentGender = selectedGender;
+      _currentGender = selectedGender;
     });
   }
-  
+
   void changedDropDownItemPlayer(String selectedPlayerLevel) {
     setState(() {
-      currentPlayerLevel = selectedPlayerLevel;
+      _currentPlayerLevel = selectedPlayerLevel;
     });
   }
-  
+
   List<DropdownMenuItem<String>> getDropDownMenuItemsGender() {
     List<DropdownMenuItem<String>> itemsGender = new List();
-    for (String gender in listGender) {
-      itemsGender.add(new DropdownMenuItem(value: gender, child: new Text(gender)));
+    for (String gender in _listGender) {
+      itemsGender
+          .add(new DropdownMenuItem(value: gender, child: new Text(gender)));
     }
     return itemsGender;
   }
-  
+
   List<DropdownMenuItem<String>> getDropDownMenuItemsPlayer() {
     List<DropdownMenuItem<String>> itemsPlayerLevel = new List();
-    for (String playerlevel in listPlayerLevel) {
-      itemsPlayerLevel.add(new DropdownMenuItem(value: playerlevel, child: new Text(playerlevel)));
+    for (String playerlevel in _listPlayerLevel) {
+      itemsPlayerLevel.add(new DropdownMenuItem(
+          value: playerlevel, child: new Text(playerlevel)));
     }
     return itemsPlayerLevel;
   }
@@ -143,7 +151,7 @@ class _RegisterUserState extends State<RegisterUser> {
             // Container do campo genero
             Container(
               width: 128,
-              height: MediaQuery.of(context).size.height * 0.9,
+              height: MediaQuery.of(context).size.height * 1.2,
               padding: EdgeInsets.only(
                 top: 20,
                 left: 40,
@@ -159,7 +167,7 @@ class _RegisterUserState extends State<RegisterUser> {
               child: Column(children: <Widget>[
                 Container(
                   width: MediaQuery.of(context).size.width / 1.2,
-                  height: 50 ,
+                  height: 50,
                   padding: EdgeInsets.only(
                     left: 16,
                     right: 16,
@@ -180,8 +188,8 @@ class _RegisterUserState extends State<RegisterUser> {
                           //fontWeight: FontWeight.w700,
                           color: Colors.grey,
                         ),
-                        value: currentGender,
-                        items: dropDownMenuItemsGender,
+                        value: _currentGender,
+                        items: _dropDownMenuItemsGender,
                         onChanged: changedDropDownItemGender,
                       ),
                     ],
@@ -194,8 +202,10 @@ class _RegisterUserState extends State<RegisterUser> {
                 Container(
                   width: MediaQuery.of(context).size.width / 1.2,
                   height: 50,
-                  padding:
-                      EdgeInsets.only( left: 16, right: 16,),
+                  padding: EdgeInsets.only(
+                    left: 16,
+                    right: 16,
+                  ),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(50)),
                     color: Colors.green[50],
@@ -212,8 +222,8 @@ class _RegisterUserState extends State<RegisterUser> {
                           //fontWeight: FontWeight.w700,
                           color: Colors.grey,
                         ),
-                        value: currentPlayerLevel,
-                        items: dropDownMenuItemsPlayerLevel,
+                        value: _currentPlayerLevel,
+                        items: _dropDownMenuItemsPlayerLevel,
                         onChanged: changedDropDownItemPlayer,
                       ),
                     ],
@@ -222,7 +232,7 @@ class _RegisterUserState extends State<RegisterUser> {
                 SizedBox(
                   height: 20,
                 ),
-                // Container do campo do nome completo 
+                // Container do campo do nome completo
                 Container(
                   width: MediaQuery.of(context).size.width / 1.2,
                   height: 50,
@@ -231,7 +241,6 @@ class _RegisterUserState extends State<RegisterUser> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(50)),
                     color: Colors.green[50],
-                    
                   ),
                   child: TextField(
                     //controller: email,
@@ -381,50 +390,50 @@ class _RegisterUserState extends State<RegisterUser> {
                   height: 20,
                 ),
                 Container(
-                    height: 50,
-                    width: MediaQuery.of(context).size.width / 1.2,
-                    alignment: Alignment.centerLeft,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        stops: [0.3, 1],
-                        colors: [
-                          Color(0xFF33691E),
-                          Color(0xFF64DD17),
-                        ],
-                      ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
-                      ),
+                  height: 50,
+                  width: MediaQuery.of(context).size.width / 1.2,
+                  alignment: Alignment.centerLeft,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                      stops: [0.3, 1],
+                      colors: [
+                        Color(0xFF33691E),
+                        Color(0xFF64DD17),
+                      ],
                     ),
-                    child: SizedBox.expand(
-                      child: FlatButton(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              "Avançar",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                color: Colors.white,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ],
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PhonePage(),
-                            ),
-                          );
-                        },
-                      ),
+                    borderRadius: BorderRadius.all(
+                      Radius.circular(10),
                     ),
                   ),
+                  child: SizedBox.expand(
+                    child: FlatButton(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(
+                            "Avançar",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                              color: Colors.white,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PhonePage(),
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                ),
               ]),
             ),
           ],
