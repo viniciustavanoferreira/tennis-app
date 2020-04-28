@@ -1,8 +1,13 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tennis_play_all/model/user.dart';
+import 'package:tennis_play_all/utils/service.dart';
 import 'phone.pages.dart';
 
 class RegisterUser extends StatefulWidget {
+  // TO-DO: create rotines to validate inputs.
   @override
   State<StatefulWidget> createState() {
     return _RegisterUserState();
@@ -24,6 +29,13 @@ class _RegisterUserState extends State<RegisterUser> {
   List<DropdownMenuItem<String>> _dropDownMenuItemsPlayerLevel;
   String _currentGender;
   String _currentPlayerLevel;
+  TextEditingController _email = new TextEditingController();
+  TextEditingController _nome = new TextEditingController();
+  // TO-DO: data de nascimento e controller.
+  TextEditingController _endereco = new TextEditingController();
+  TextEditingController _cep = new TextEditingController();
+  TextEditingController _password = new TextEditingController();
+  // TO-DO: repetir senha, controller e validação entre senhas.
 
   @override
   void initState() {
@@ -34,7 +46,7 @@ class _RegisterUserState extends State<RegisterUser> {
     super.initState();
   }
 
-  void changedDropDownItemGender(String selectedGender) {
+  void _changedDropDownItemGender(String selectedGender) {
     setState(() {
       _currentGender = selectedGender;
     });
@@ -190,7 +202,7 @@ class _RegisterUserState extends State<RegisterUser> {
                         ),
                         value: _currentGender,
                         items: _dropDownMenuItemsGender,
-                        onChanged: changedDropDownItemGender,
+                        onChanged: _changedDropDownItemGender,
                       ),
                     ],
                   ),
@@ -243,7 +255,7 @@ class _RegisterUserState extends State<RegisterUser> {
                     color: Colors.green[50],
                   ),
                   child: TextField(
-                    //controller: email,
+                    controller: _nome,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                       border: InputBorder.none,
@@ -254,7 +266,7 @@ class _RegisterUserState extends State<RegisterUser> {
                 SizedBox(
                   height: 20,
                 ),
-                //Contatiner do campo e-mail
+                //Container do campo e-mail
                 Container(
                   width: MediaQuery.of(context).size.width / 1.2,
                   height: 50,
@@ -266,6 +278,7 @@ class _RegisterUserState extends State<RegisterUser> {
                   ),
                   child: TextField(
                     //controller: email,
+                    controller: _email,
                     keyboardType: TextInputType.emailAddress,
                     decoration: InputDecoration(
                       border: InputBorder.none,
@@ -309,7 +322,7 @@ class _RegisterUserState extends State<RegisterUser> {
                     color: Colors.green[50],
                   ),
                   child: TextField(
-                    //controller: email,
+                    controller: _endereco,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                       border: InputBorder.none,
@@ -331,7 +344,7 @@ class _RegisterUserState extends State<RegisterUser> {
                     color: Colors.green[50],
                   ),
                   child: TextField(
-                    //controller: email,
+                    controller: _cep,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
                       border: InputBorder.none,
@@ -353,7 +366,7 @@ class _RegisterUserState extends State<RegisterUser> {
                     color: Colors.green[50],
                   ),
                   child: TextField(
-                    //controller: email,
+                    controller: _password,
                     obscureText: true,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(
@@ -424,6 +437,7 @@ class _RegisterUserState extends State<RegisterUser> {
                         ],
                       ),
                       onPressed: () {
+                        // TO-DO: refatorar para invocar método de construção e tratar demais atributos de User.
                         Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -441,4 +455,5 @@ class _RegisterUserState extends State<RegisterUser> {
       ),
     );
   }
+
 }
