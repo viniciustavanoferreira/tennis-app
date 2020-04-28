@@ -71,4 +71,54 @@ class User {
     dataUser['user_address_long'] = this.dblAddressLong;
     return dataUser;
   }
+
+  int get getIntId => intId;
+
+  set setIntId(int intId) => this.intId = intId;
+
+  int get getIntZipCode => intZipCode;
+
+  set setIntZipCode(int intZipCode) => this.intZipCode = intZipCode;
+
+  int get getIntActive => intActive;
+
+  set setIntActive(int intActive) => this.intActive = intActive;
+
+  String get getStrLogin => strLogin;
+
+  set setStrLogin(String strLogin) => this.strLogin = strLogin;
+
+  String get getStrPassword => strPassword;
+
+  set setStrPassword(String strPassword) => this.strPassword = strPassword;
+
+  String get getStrDisplayName => strDisplayName;
+
+  set setStrDisplayName(String strDisplayName) =>
+      this.strDisplayName = strDisplayName;
+
+  String get getStrGender => strGender;
+
+  set setStrGender(String strGender) => this.strGender = strGender;
+
+  String get getStrAddress => strAddress;
+
+  set setStrAddress(String strAddress) => this.strAddress = strAddress;
+
+  String get getStrRegion => strRegion;
+
+  set setStrRegion(String strRegion) => this.strRegion = strRegion;
+
+  String get getStrPhoneNumber => strPhoneNumber;
+
+  set setStrPhoneNumber(String strPhoneNumber) =>
+      this.strPhoneNumber = strPhoneNumber;
+
+  String get getStrBirthDate => strBirthDate;
+
+  set setStrBirthDate(String strBirthDate) => this.strBirthDate = strBirthDate;
+
+  String get getStrLevelPlay => strLevelPlay;
+
+  set setStrLevelPlay(String strLevelPlay) => this.strLevelPlay = strLevelPlay;
 }
