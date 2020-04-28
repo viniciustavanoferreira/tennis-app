@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ffi';
 
 class User {
@@ -53,7 +54,7 @@ class User {
   }
 
   //Método que constroi o arquivo Json
-  Map<String, dynamic> toJsonUser() {
+  String toJsonUser() {
     final Map<String, dynamic> dataUser = new Map<String, dynamic>();
     dataUser['id'] = this.intId;
     dataUser['user_zip_code'] = this.intZipCode;
@@ -69,7 +70,7 @@ class User {
     dataUser['user_level_play'] = this.strLevelPlay;
     dataUser['user_address_lat'] = this.dblAddressLat;
     dataUser['user_address_long'] = this.dblAddressLong;
-    return dataUser;
+    return jsonEncode(dataUser);
   }
 
   int get getIntId => intId;

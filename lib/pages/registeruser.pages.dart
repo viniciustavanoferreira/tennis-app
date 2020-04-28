@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:tennis_play_all/model/user.dart';
 import 'package:tennis_play_all/utils/service.dart';
 import 'phone.pages.dart';
@@ -30,9 +31,9 @@ class _RegisterUserState extends State<RegisterUser> {
   String _currentGender;
   String _currentPlayerLevel;
   TextEditingController _email = new TextEditingController();
-  TextEditingController _nome = new TextEditingController();
+  TextEditingController _name = new TextEditingController();
   // TO-DO: data de nascimento e controller.
-  TextEditingController _endereco = new TextEditingController();
+  TextEditingController _address = new TextEditingController();
   TextEditingController _cep = new TextEditingController();
   TextEditingController _password = new TextEditingController();
   // TO-DO: repetir senha, controller e validação entre senhas.
@@ -255,7 +256,7 @@ class _RegisterUserState extends State<RegisterUser> {
                     color: Colors.green[50],
                   ),
                   child: TextField(
-                    controller: _nome,
+                    controller: _name,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                       border: InputBorder.none,
@@ -322,7 +323,7 @@ class _RegisterUserState extends State<RegisterUser> {
                     color: Colors.green[50],
                   ),
                   child: TextField(
-                    controller: _endereco,
+                    controller: _address,
                     keyboardType: TextInputType.text,
                     decoration: InputDecoration(
                       border: InputBorder.none,
@@ -436,14 +437,26 @@ class _RegisterUserState extends State<RegisterUser> {
                           ),
                         ],
                       ),
-                      onPressed: () {
+                      onPressed: () async {
                         // TO-DO: refatorar para invocar método de construção e tratar demais atributos de User.
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => PhonePage(),
-                          ),
-                        );
+
+                        User _user = User();
+                        _user.setStrDisplayName = _name.text.toLowerCase();
+                        _user.setStrLogin = _email.text.toLowerCase();
+                        _user.setStrPassword = _password.text;
+                        _user.setStrAddress = _address.text.toLowerCase();
+
+                        if (await _registerUser(_user)) {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PhonePage(),
+                            ),
+                          );
+                        } else {
+                          Fluttertoast.showToast(
+                              msg: "Erro ao cadastrar dados");
+                        }
                       },
                     ),
                   ),
@@ -456,4 +469,25 @@ class _RegisterUserState extends State<RegisterUser> {
     );
   }
 
+  Future<bool> _registerUser(User _user) async {
+
+    Service _service = Service.instance;
+
+    String _body = _user.toJsonUser();
+    String _urn = '/user';
+
+
+
+    // TO-DO: validar quando a API estiver funcionando ou buscar o novo payload que ainda não foi enviado.
+    try {
+      String _bodyResponse = await _service.post(_body, _urn);
+      return(json.decode(_bodyResponse)['id'] == null ? false : true);
+
+      
+    } catch (e) {
+      return false;
+
+    }
+
+  }
 }
