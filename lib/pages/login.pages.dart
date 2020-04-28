@@ -190,9 +190,9 @@ class _LoginPageState extends State<LoginPage> {
                           setState(() {
                             // TO-DO: ou criar um método para cada tratativa, ou implementa o resto que falta das tratativas no mesmo método já criado.
                             // TO-DO: onChange, delete error msg.
-                            // TO-DO: dimensionamento dos widgets comprometidos.  
-                            _isEmailValid = _validateEmail(_email.text); 
-                            _isPasswordValid = _validatePassword(_password.text);
+                            // TO-DO: dimensionamento dos widgets comprometidos.
+                            _isEmailValid = _validateEmail(_email.text);
+                            // _isPasswordValid = _validatePassword(_password.text);
                           });
 
                           // if (_email.text == "" || _password.text == "") {
@@ -258,45 +258,44 @@ class _LoginPageState extends State<LoginPage> {
   bool _validateEmail(String text) {
     // TO-DO: case sensitive - adapt it.
     RegExp regex = new RegExp(r"^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$");
-    if(regex.hasMatch(text)){
+    if (regex.hasMatch(text)) {
       return true;
     } else {
       return false;
     }
-
   }
 
   bool _validatePassword(String text) {
     // TO-DO: try to avoid instantiate twice a regex's object.
     // Mínimo de 8 carac., ao menos 1 núm., 1 letra e 1 carac. especial.
-    RegExp regex = new RegExp(r"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$");
-    if(regex.hasMatch(text)){
+    RegExp regex = new RegExp(
+        r"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$");
+    if (regex.hasMatch(text)) {
       return true;
     } else {
       return false;
-    }    
+    }
   }
 
-}
+  Future<bool> _checkLoginCredentials(
+      TextEditingController _email, TextEditingController _password) async {
+    Service service = Service.instance;
 
-_checkLoginCredentials(
-    TextEditingController _email, TextEditingController _password) async {
-  Service service = Service.instance;
+    String body = _loginToString(_email.text, _password.text);
+    String urn = '/auth/login';
 
-  String body = _loginToString(_email.text, _password.text);
-  String urn = '/auth/login';
+    String bodyResponse = await service.post(body, urn);
+    bool status = json.decode(bodyResponse)['id'] == null ? false : true;
 
-  String bodyResponse = await service.post(body, urn);
-  bool status = json.decode(bodyResponse)['id'] == null ? false : true;
+    return status;
+  }
 
-  return status;
-}
+  String _loginToString(String _email, String _password) {
+    Map<String, dynamic> mapJson = {
+      'user_login': _email,
+      'user_password': _password,
+    };
 
-String _loginToString(String _email, String _password) {
-  Map<String, dynamic> mapJson = {
-    'user_login': _email,
-    'user__password': _password,
-  };
-
-  return jsonEncode(mapJson);
+    return jsonEncode(mapJson);
+  }
 }
