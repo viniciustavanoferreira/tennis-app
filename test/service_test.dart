@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:tennis_play_all/utils/service.dart';
+import 'package:tennis_play_all/services/service.dart';
 
 void main() {
 //  Feature: Invoke RESTful APIs from Flutter
