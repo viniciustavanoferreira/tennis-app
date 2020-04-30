@@ -1,4 +1,4 @@
-import 'package:tennis_play_all/utils/service.dart';
+import 'package:tennis_play_all/services/service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'home.pages.dart';
@@ -201,9 +201,7 @@ class _LoginPageState extends State<LoginPage> {
                           // }
 
                           // TODO: aplicar animação de espera para o login; desativar botão de logar
-                          var loginStatus =
-                              await _checkLoginCredentials(_email, _password);
-                          if (loginStatus == true) {
+                          if (await _checkLoginCredentials(_email, _password)) {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -279,15 +277,18 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<bool> _checkLoginCredentials(
       TextEditingController _email, TextEditingController _password) async {
-    Service service = Service.instance;
 
-    String body = _loginToString(_email.text, _password.text);
-    String urn = '/auth/login';
+    Service _service = Service.instance;
+    bool _status = false;
 
-    String bodyResponse = await service.post(body, urn);
-    bool status = json.decode(bodyResponse)['id'] == null ? false : true;
+    try{
+      _status = json.decode(await _service.post(_loginToString(_email.text, _password.text), '/auth/login')) == null ? false : true;
+    } catch (_){
+      _status = false;
+    }
 
-    return status;
+    return _status;
+
   }
 
   String _loginToString(String _email, String _password) {

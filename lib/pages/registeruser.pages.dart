@@ -3,8 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:tennis_play_all/model/user.dart';
-import 'package:tennis_play_all/utils/service.dart';
+import 'package:tennis_play_all/models/user.dart';
+import 'package:tennis_play_all/services/service.dart';
 import 'phone.pages.dart';
 
 class RegisterUser extends StatefulWidget {
@@ -446,6 +446,7 @@ class _RegisterUserState extends State<RegisterUser> {
                         _user.setStrPassword = _password.text;
                         _user.setStrAddress = _address.text.toLowerCase();
 
+                        // TO-DO: invocar POST em USER só depois da PhonePage.
                         if (await _registerUser(_user)) {
                           Navigator.push(
                             context,
@@ -473,21 +474,17 @@ class _RegisterUserState extends State<RegisterUser> {
 
     Service _service = Service.instance;
 
-    String _body = _user.toJsonUser();
-    String _urn = '/user';
-
-
+    bool _status = false;
 
     // TO-DO: validar quando a API estiver funcionando ou buscar o novo payload que ainda não foi enviado.
-    try {
-      String _bodyResponse = await _service.post(_body, _urn);
-      return(json.decode(_bodyResponse)['id'] == null ? false : true);
-
-      
-    } catch (e) {
-      return false;
-
+    try{
+      _status = json.decode(await _service.post(_user.toJsonUser(), '/user')) == null ? false : true;
+    } catch (_){
+      _status = false;
     }
 
+    return _status;
+    
   }
+  
 }
