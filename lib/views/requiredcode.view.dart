@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'login.pages.dart';
+import 'newpassword.view.dart';
 
-class NewPasswordPage extends StatelessWidget {
+class RequiredCodePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,9 +55,9 @@ class NewPasswordPage extends StatelessWidget {
                   height: 60,
                 ),
                 SizedBox(
-                  height: 35,
+                  height: 30,
                   child: Text(
-                    "Digite a sua nova senha",
+                    "Validação do Código",
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.w500,
@@ -66,7 +66,19 @@ class NewPasswordPage extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 60,
+                  height: 20,
+                ),
+                SizedBox(
+                  height: 80,
+                  child: Text(
+                    "Digite o Código enviado por e-mail para validação",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
                 ),
                 Container(
                   height: 250,
@@ -86,7 +98,7 @@ class NewPasswordPage extends StatelessWidget {
                   child: Column(
                     children: <Widget>[
                       SizedBox(
-                        height: 10,
+                        height: MediaQuery.of(context).size.height * 0.1,
                       ),
                       Container(
                         width: MediaQuery.of(context).size.width * 0.8,
@@ -99,46 +111,18 @@ class NewPasswordPage extends StatelessWidget {
                         ),
                         child: TextField(
                           //controller: email,
-                          obscureText: true,
-                          keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             border: InputBorder.none,
                             icon: Icon(
                               Icons.enhanced_encryption,
                               color: Colors.grey,
                             ),
-                            hintText: 'Digite sua nova senha',
+                            hintText: 'Digite o código Enviado',
                           ),
                         ),
                       ),
                       SizedBox(
                         height: 30,
-                      ),
-                      Container(
-                        width: MediaQuery.of(context).size.width * 0.8,
-                        height: 45,
-                        padding: EdgeInsets.only(
-                            top: 4, left: 16, right: 16, bottom: 4),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.all(Radius.circular(50)),
-                          color: Colors.green[50],
-                        ),
-                        child: TextField(
-                          //controller: email,
-                          obscureText: true,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            border: InputBorder.none,
-                            icon: Icon(
-                              Icons.enhanced_encryption,
-                              color: Colors.grey,
-                            ),
-                            hintText: 'Redigite sua nova senha',
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
                       ),
                       Container(
                         height: 50,
@@ -164,7 +148,7 @@ class NewPasswordPage extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
                                 Text(
-                                  "Cadastrar",
+                                  "Validar",
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     fontSize: 20,
@@ -181,7 +165,7 @@ class NewPasswordPage extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => LoginPage(),
+                                  builder: (context) => NewPasswordPage(),
                                 ),
                               );
                             },

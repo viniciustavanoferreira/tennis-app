@@ -3,9 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:tennis_play_all/models/user.dart';
-import 'package:tennis_play_all/services/service.dart';
-import 'phone.pages.dart';
+import 'package:tennis_play_all/models/user.model.dart';
+import 'phone.view.dart';
 
 class RegisterUser extends StatefulWidget {
   // TO-DO: create rotines to validate inputs.
@@ -440,24 +439,24 @@ class _RegisterUserState extends State<RegisterUser> {
                       onPressed: () async {
                         // TO-DO: refatorar para invocar método de construção e tratar demais atributos de User.
 
-                        User _user = User();
-                        _user.setStrDisplayName = _name.text.toLowerCase();
-                        _user.setStrLogin = _email.text.toLowerCase();
-                        _user.setStrPassword = _password.text;
-                        _user.setStrAddress = _address.text.toLowerCase();
+                        // UserModel _user = UserModel();
+                        // _user.setStrDisplayName = _name.text.toLowerCase();
+                        // _user.setStrLogin = _email.text.toLowerCase();
+                        // _user.setStrPassword = _password.text;
+                        // _user.setStrAddress = _address.text.toLowerCase();
 
-                        // TO-DO: invocar POST em USER só depois da PhonePage.
-                        if (await _registerUser(_user)) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PhonePage(),
-                            ),
-                          );
-                        } else {
-                          Fluttertoast.showToast(
-                              msg: "Erro ao cadastrar dados");
-                        }
+                        // // TO-DO: invocar POST em USER só depois da PhonePage.
+                        // if (await _registerUser(_user)) {
+                        //   Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //       builder: (context) => PhonePage(),
+                        //     ),
+                        //   );
+                        // } else {
+                        //   Fluttertoast.showToast(
+                        //       msg: "Erro ao cadastrar dados");
+                        // }
                       },
                     ),
                   ),
@@ -470,21 +469,21 @@ class _RegisterUserState extends State<RegisterUser> {
     );
   }
 
-  Future<bool> _registerUser(User _user) async {
+  // Future<bool> _registerUser(UserModel _userModel) async {
 
-    Service _service = Service.instance;
+  //   Service _service = Service.instance;
 
-    bool _status = false;
+  //   bool _status = false;
 
-    // TO-DO: validar quando a API estiver funcionando ou buscar o novo payload que ainda não foi enviado.
-    try{
-      _status = json.decode(await _service.post(_user.toJsonUser(), '/user')) == null ? false : true;
-    } catch (_){
-      _status = false;
-    }
+  //   // TO-DO: validar quando a API estiver funcionando ou buscar o novo payload que ainda não foi enviado.
+  //   try{
+  //     _status = json.decode(await _service.post(_userModel.toJson(), '/user')) == null ? false : true;
+  //   } catch (_){
+  //     _status = false;
+  //   }
 
-    return _status;
+  //   return _status;
     
-  }
+  // }
   
 }
