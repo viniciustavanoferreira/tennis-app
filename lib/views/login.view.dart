@@ -209,41 +209,46 @@ class _LoginPageState extends State<LoginPage> {
                                 ],
                               ),
                               onPressed: () async {
-                                if (_validateEmail(_email.text) &&
-                                    _validatePassword(_password.text)) {
+                                setState(() {
+                                  _isEmailValid = _loginController
+                                      .validateEmail(_email.text);
+                                  _isPasswordValid = _loginController
+                                      .validatePassword(_password.text);
+                                });
+
+                                if (_isEmailValid && _isPasswordValid) {
                                   setState(() {
                                     _loginViewModel.login = _email.text;
                                     _loginViewModel.password = _password.text;
                                     _loginViewModel.busy = true;
                                   });
+                                  try {
+                                    _userModel = await _loginController
+                                        .post(_loginViewModel);
+
+                                    _appStore.setUser(
+                                        _userModel.getStrLogin,
+                                        _userModel.getStrPassword,
+                                        _userModel.getStrDisplayName,
+                                        _userModel.getStrLevelPlay,
+                                        _userModel.getdblAddressLat,
+                                        _userModel.getdblAddressLong);
+
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => HomePage(),
+                                      ),
+                                    );
+                                  } catch (e) {
+                                    Fluttertoast.showToast(
+                                        msg: "Usuário e/ou senha inválidos.");
+                                  }
+
+                                  setState(() {
+                                    _loginViewModel.busy = false;
+                                  });
                                 }
-
-                                try {
-                                  _userModel = await _loginController
-                                      .post(_loginViewModel);
-
-                                  _appStore.setUser(_userModel.getStrLogin, 
-                                                    _userModel.getStrPassword, 
-                                                    _userModel.getStrDisplayName, 
-                                                    _userModel.getStrLevelPlay, 
-                                                    _userModel.getdblAddressLat, 
-                                                    _userModel.getdblAddressLong);
-
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => HomePage(),
-                                    ),
-                                  );
-
-                                } catch (e) {
-                                  Fluttertoast.showToast(
-                                      msg: "Usuário e/ou senha inválidos.");
-                                }
-
-                                setState(() {
-                                  _loginViewModel.busy = false;
-                                });
                               },
                             ),
                           ),
@@ -284,33 +289,4 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
-  // TO-DO: refatorar!
-  bool _validateEmail(String text) {
-    // TO-DO: case sensitive - adapt it.
-    RegExp regex = new RegExp(r"^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$");
-    if (regex.hasMatch(text)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  bool _validatePassword(String text) {
-    // TO-DO: try to avoid instantiate twice a regex's object.
-    RegExp regex = new RegExp(
-        // Mínimo de 8 carac., ao menos 1 núm. e 1 letra.
-        r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
-
-        // Mínimo de 8 carac., ao menos 1 núm., 1 letra e 1 carac. especial.
-        // r"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$");
-        );
-    // if (regex.hasMatch(text)) {
-    //   return true;
-    // } else {
-    //   return false;
-    // }
-    return true; // TO-DO: refatorar!
-  }
-
 }
