@@ -4,13 +4,14 @@ import 'package:tennis_play_all/view-models/login.view-model.dart';
 
 class LoginController {
 
-  LoginRepository loginRepository;
+  LoginRepository _loginRepository;
 
-  LoginController({this.loginRepository});
+  LoginController(LoginRepository loginRepository){
+    this._loginRepository = loginRepository;
+  }
 
   Future<UserModel> post(LoginViewModel loginViewModel) async {
-    return (await loginRepository.post(loginViewModel));
-
+    return (await _loginRepository.post(loginViewModel));
   }
 
   bool validateEmail(String text) {

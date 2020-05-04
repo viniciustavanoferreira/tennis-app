@@ -4,6 +4,7 @@ import 'package:tennis_play_all/models/user.model.dart';
 import 'package:tennis_play_all/repositories/login.repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:tennis_play_all/repositories/user.repository.dart';
 import 'package:tennis_play_all/stores/app.store.dart';
 import 'package:tennis_play_all/view-models/login.view-model.dart';
 import 'home.view.dart';
@@ -24,8 +25,7 @@ class _LoginPageState extends State<LoginPage> {
   bool _isEmailValid = true;
   bool _isPasswordValid = true;
 
-  LoginController _loginController =
-      LoginController(loginRepository: LoginRepository());
+  LoginController _loginController = LoginController(LoginRepository());
   LoginViewModel _loginViewModel = LoginViewModel();
   UserModel _userModel;
   AppStore _appStore;
