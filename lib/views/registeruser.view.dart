@@ -3,7 +3,10 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:tennis_play_all/controllers/user.controller.dart';
 import 'package:tennis_play_all/models/user.model.dart';
+import 'package:tennis_play_all/repositories/user.repository.dart';
+import 'package:tennis_play_all/view-models/registeruser.view-model.dart';
 import 'phone.view.dart';
 
 class RegisterUser extends StatefulWidget {
@@ -36,6 +39,9 @@ class _RegisterUserState extends State<RegisterUser> {
   TextEditingController _cep = new TextEditingController();
   TextEditingController _password = new TextEditingController();
   // TO-DO: repetir senha, controller e validação entre senhas.
+
+  RegisterUserViewModel _registerUserViewModel = RegisterUserViewModel();
+  UserController _userController = UserController(UserRepository());
 
   @override
   void initState() {
@@ -438,7 +444,29 @@ class _RegisterUserState extends State<RegisterUser> {
                       ),
                       onPressed: () async {
                         // TO-DO: refatorar para invocar método de construção e tratar demais atributos de User.
+                        // TO-DO: IF todos os inputs estão válidos THEN
+                        // TO-DO: Trazer POST em USER quando a view Phone Page ficar pronta.
+                        // TO-DO: inviabilizar /t (por exemplo) em campos de input.
+                        _registerUserViewModel.email = _email.text;
+                        _registerUserViewModel.password = _password.text;
+                        _registerUserViewModel.name = _name.text;
+                        _registerUserViewModel.cep = _cep.text;
+                        _registerUserViewModel.address = _address.text;
 
+                        _userController.post(_registerUserViewModel)
+                          .then((data){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PhonePage(),
+                            ));
+                          })
+                          .catchError((data){
+                            Fluttertoast.showToast(
+                              msg: "Erro ao cadastrar dados");
+                          });
+
+                        // TO-DO: ENDIF
                         // UserModel _user = UserModel();
                         // _user.setStrDisplayName = _name.text.toLowerCase();
                         // _user.setStrLogin = _email.text.toLowerCase();
