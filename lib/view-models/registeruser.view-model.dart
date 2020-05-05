@@ -20,6 +20,8 @@ class RegisterUserViewModel {
 
   set busy(bool value) => _busy = value;
 
+  bool get busy => _busy;
+
   String toJson() {
     final Map<String, dynamic> mapLogin = new Map<String, dynamic>();
     mapLogin['user_login'] = this._email;
