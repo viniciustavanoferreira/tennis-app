@@ -12,7 +12,7 @@ import 'forgotpassword.view.dart';
 import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class LoginPage extends StatefulWidget {∏
+class LoginPage extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
     return _LoginPageState();
@@ -31,7 +31,7 @@ class _LoginPageState extends State<LoginPage> {
   AppStore _appStore;
 
   @override
-  void initState() {∏
+  void initState() {
     SystemChrome.setEnabledSystemUIOverlays([]);
     super.initState();
   }

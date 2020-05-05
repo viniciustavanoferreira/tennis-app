@@ -453,11 +453,12 @@ class _RegisterUserState extends State<RegisterUser> {
                               ],
                             ),
                             onPressed: () async {
+                          
                               // TO-DO: refatorar para invocar método de construção e tratar demais atributos de User.
                               // TO-DO: IF todos os inputs estão válidos THEN
                               // TO-DO: Trazer POST em USER quando a view Phone Page ficar pronta.
                               // TO-DO: inviabilizar /t (por exemplo) em campos de input.
-                              setState(() {
+                               setState(() {
                                 _registerUserViewModel.busy = true;
                               });
 
@@ -483,6 +484,7 @@ class _RegisterUserState extends State<RegisterUser> {
                                   _registerUserViewModel.busy = false;
                                 });
                               });
+                              
 
                               // TO-DO: ENDIF
                               // UserModel _user = UserModel();
