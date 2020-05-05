@@ -6,7 +6,7 @@ import 'forgotpassword.pages.dart';
 import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends StatefulWidget {∏
   @override
   State<StatefulWidget> createState() {
     return _LoginPageState();
@@ -20,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   bool _isPasswordValid = true;
 
   @override
-  void initState() {
+  void initState() {∏
     SystemChrome.setEnabledSystemUIOverlays([]);
     super.initState();
   }
