@@ -1,8 +1,14 @@
-import 'package:tennis_play_all/utils/service.dart';
+import 'package:provider/provider.dart';
+import 'package:tennis_play_all/controllers/login.controller.dart';
+import 'package:tennis_play_all/models/user.model.dart';
+import 'package:tennis_play_all/repositories/login.repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'home.pages.dart';
-import 'forgotpassword.pages.dart';
+import 'package:tennis_play_all/repositories/user.repository.dart';
+import 'package:tennis_play_all/stores/app.store.dart';
+import 'package:tennis_play_all/view-models/login.view-model.dart';
+import 'home.view.dart';
+import 'forgotpassword.view.dart';
 import 'dart:convert';
 import 'package:fluttertoast/fluttertoast.dart';
 
@@ -19,6 +25,11 @@ class _LoginPageState extends State<LoginPage> {
   bool _isEmailValid = true;
   bool _isPasswordValid = true;
 
+  LoginController _loginController = LoginController(LoginRepository());
+  LoginViewModel _loginViewModel = LoginViewModel();
+  UserModel _userModel;
+  AppStore _appStore;
+
   @override
   void initState() {∏
     SystemChrome.setEnabledSystemUIOverlays([]);
@@ -27,6 +38,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    _appStore = Provider.of<AppStore>(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
@@ -152,72 +164,95 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(
                     height: 30,
                   ),
-                  Container(
-                    height: 50,
-                    width: MediaQuery.of(context).size.width / 1.2,
-                    alignment: Alignment.centerLeft,
-                    decoration: BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        stops: [0.3, 1],
-                        colors: [
-                          Color(0xFF33691E),
-                          Color(0xFF64DD17),
-                        ],
-                      ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                    ),
-                    child: SizedBox.expand(
-                      child: FlatButton(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              "Logar",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                color: Colors.white,
-                              ),
-                              textAlign: TextAlign.center,
+                  _loginViewModel.busy
+                      ? Center(
+                          child: Container(
+                            child: CircularProgressIndicator(
+                              valueColor: new AlwaysStoppedAnimation<Color>(
+                                  Colors.green),
+                              backgroundColor: Colors.white,
                             ),
-                          ],
-                        ),
-                        onPressed: () async {
-                          setState(() {
-                            // TO-DO: ou criar um método para cada tratativa, ou implementa o resto que falta das tratativas no mesmo método já criado.
-                            // TO-DO: onChange, delete error msg.
-                            // TO-DO: dimensionamento dos widgets comprometidos.
-                            _isEmailValid = _validateEmail(_email.text);
-                            // _isPasswordValid = _validatePassword(_password.text);
-                          });
-
-                          // if (_email.text == "" || _password.text == "") {
-                          //   Fluttertoast.showToast(msg: "Preencha as informações de login.");
-                          //   return;
-                          // }
-
-                          // TODO: aplicar animação de espera para o login; desativar botão de logar
-                          var loginStatus =
-                              await _checkLoginCredentials(_email, _password);
-                          if (loginStatus == true) {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => HomePage(),
+                          ),
+                        )
+                      : Container(
+                          height: 50,
+                          width: MediaQuery.of(context).size.width / 1.2,
+                          alignment: Alignment.centerLeft,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                              stops: [0.3, 1],
+                              colors: [
+                                Color(0xFF33691E),
+                                Color(0xFF64DD17),
+                              ],
+                            ),
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                          ),
+                          child: SizedBox.expand(
+                            child: FlatButton(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    "Logar",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
                               ),
-                            );
-                          } else {
-                            Fluttertoast.showToast(
-                                msg: "Usuário e/ou senha inválidos.");
-                          }
-                        },
-                      ),
-                    ),
-                  ),
+                              onPressed: () async {
+                                setState(() {
+                                  _isEmailValid = _loginController
+                                      .validateEmail(_email.text);
+                                  _isPasswordValid = _loginController
+                                      .validatePassword(_password.text);
+                                });
+
+                                if (_isEmailValid && _isPasswordValid) {
+                                  setState(() {
+                                    _loginViewModel.login = _email.text;
+                                    _loginViewModel.password = _password.text;
+                                    _loginViewModel.busy = true;
+                                  });
+                                  try {
+                                    _userModel = await _loginController
+                                        .post(_loginViewModel);
+
+                                    _appStore.setUser(
+                                        _userModel.getStrLogin,
+                                        _userModel.getStrPassword,
+                                        _userModel.getStrDisplayName,
+                                        _userModel.getStrLevelPlay,
+                                        _userModel.getdblAddressLat,
+                                        _userModel.getdblAddressLong);
+
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => HomePage(),
+                                      ),
+                                    );
+                                  } catch (e) {
+                                    Fluttertoast.showToast(
+                                        msg: "Usuário e/ou senha inválidos.");
+                                  }
+
+                                  setState(() {
+                                    _loginViewModel.busy = false;
+                                  });
+                                }
+                              },
+                            ),
+                          ),
+                        ),
                   SizedBox(
                     height: 30,
                   ),
@@ -253,49 +288,5 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
-  }
-
-  bool _validateEmail(String text) {
-    // TO-DO: case sensitive - adapt it.
-    RegExp regex = new RegExp(r"^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$");
-    if (regex.hasMatch(text)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  bool _validatePassword(String text) {
-    // TO-DO: try to avoid instantiate twice a regex's object.
-    // Mínimo de 8 carac., ao menos 1 núm., 1 letra e 1 carac. especial.
-    RegExp regex = new RegExp(
-        r"^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$");
-    if (regex.hasMatch(text)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  Future<bool> _checkLoginCredentials(
-      TextEditingController _email, TextEditingController _password) async {
-    Service service = Service.instance;
-
-    String body = _loginToString(_email.text, _password.text);
-    String urn = '/auth/login';
-
-    String bodyResponse = await service.post(body, urn);
-    bool status = json.decode(bodyResponse)['id'] == null ? false : true;
-
-    return status;
-  }
-
-  String _loginToString(String _email, String _password) {
-    Map<String, dynamic> mapJson = {
-      'user_login': _email,
-      'user_password': _password,
-    };
-
-    return jsonEncode(mapJson);
   }
 }

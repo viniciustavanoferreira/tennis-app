@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
-import 'registeruser.pages.dart';
-import 'login.pages.dart';
+import 'package:provider/provider.dart';
+import 'package:tennis_play_all/stores/app.store.dart';
+import 'registeruser.view.dart';
+import 'login.view.dart';
 
 class HomePage extends StatelessWidget {
+  AppStore _appStore;
+
   @override
   Widget build(BuildContext context) {
+    _appStore = Provider.of<AppStore>(context);
     return Scaffold(
       body: Container(
         color: Colors.red,
@@ -49,6 +54,10 @@ class HomePage extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
+                ),
+                SizedBox(
+                  height: 60,
+                  child: Text(_appStore.strDisplayName),
                 ),
               ]),
             ),

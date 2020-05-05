@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'dart:ffi';
 
-class User {
+class UserModel {
   //variables
   int intId;
   int intZipCode;
@@ -19,7 +19,7 @@ class User {
   Double dblAddressLong;
 
   // método construtor da classe
-  User(
+  UserModel(
       {this.intId,
       this.intZipCode,
       this.intActive,
@@ -36,25 +36,23 @@ class User {
       this.dblAddressLong});
 
   // Método que pega os dados do arquivo Json
-  User.fromJsonUser(Map<String, dynamic> json) {
-    this.intId = json['id'];
-    this.intZipCode = json['user_zip_code'];
-    this.intActive = json['user_active'];
+  UserModel.fromJson(Map<String, dynamic> json) {
+    // this.intId = json['id'];
     this.strLogin = json['user_login'];
-    this.strPassword = json['user_password'];
     this.strDisplayName = json['user_display_name'];
     this.strGender = json['user_gender'];
+    //this.intZipCode = json['user_zip_code'];
     this.strAddress = json['user_address'];
+    // this.dblAddressLat = json['user_address_lat'];
+    // this.dblAddressLong = json['user_address_long'];
     this.strRegion = json['user_region'];
     this.strPhoneNumber = json['user_phone_number'];
     this.strBirthDate = json['user_birth_date'];
     this.strLevelPlay = json['user_level_play'];
-    this.dblAddressLat = json['user_address_lat'];
-    this.dblAddressLong = json['user_address_long'];
   }
 
   //Método que constroi o arquivo Json
-  String toJsonUser() {
+  String toJson() {
     final Map<String, dynamic> dataUser = new Map<String, dynamic>();
     dataUser['id'] = this.intId;
     dataUser['user_zip_code'] = this.intZipCode;
@@ -122,4 +120,8 @@ class User {
   String get getStrLevelPlay => strLevelPlay;
 
   set setStrLevelPlay(String strLevelPlay) => this.strLevelPlay = strLevelPlay;
+
+  Double get getdblAddressLat => dblAddressLat;
+
+  Double get getdblAddressLong => dblAddressLong;
 }
