@@ -408,87 +408,105 @@ class _RegisterUserState extends State<RegisterUser> {
                 SizedBox(
                   height: 20,
                 ),
-                Container(
-                  height: 50,
-                  width: MediaQuery.of(context).size.width / 1.2,
-                  alignment: Alignment.centerLeft,
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      stops: [0.3, 1],
-                      colors: [
-                        Color(0xFF33691E),
-                        Color(0xFF64DD17),
-                      ],
-                    ),
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(10),
-                    ),
-                  ),
-                  child: SizedBox.expand(
-                    child: FlatButton(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Text(
-                            "Avançar",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              color: Colors.white,
-                            ),
-                            textAlign: TextAlign.center,
+                _registerUserViewModel.busy
+                    ? Center(
+                        child: Container(
+                          child: CircularProgressIndicator(
+                            valueColor:
+                                new AlwaysStoppedAnimation<Color>(Colors.green),
+                            backgroundColor: Colors.white,
                           ),
-                        ],
+                        ),
+                      )
+                    : Container(
+                        height: 50,
+                        width: MediaQuery.of(context).size.width / 1.2,
+                        alignment: Alignment.centerLeft,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                            stops: [0.3, 1],
+                            colors: [
+                              Color(0xFF33691E),
+                              Color(0xFF64DD17),
+                            ],
+                          ),
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                        ),
+                        child: SizedBox.expand(
+                          child: FlatButton(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Text(
+                                  "Avançar",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ],
+                            ),
+                            onPressed: () async {
+                              // TO-DO: refatorar para invocar método de construção e tratar demais atributos de User.
+                              // TO-DO: IF todos os inputs estão válidos THEN
+                              // TO-DO: Trazer POST em USER quando a view Phone Page ficar pronta.
+                              // TO-DO: inviabilizar /t (por exemplo) em campos de input.
+                              setState(() {
+                                _registerUserViewModel.busy = true;
+                              });
+
+                              _registerUserViewModel.email = _email.text;
+                              _registerUserViewModel.password = _password.text;
+                              _registerUserViewModel.name = _name.text;
+                              _registerUserViewModel.cep = _cep.text;
+                              _registerUserViewModel.address = _address.text;
+
+                              _userController
+                                  .post(_registerUserViewModel)
+                                  .then((data) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => PhonePage(),
+                                    ));
+                              }).catchError((data) {
+                                Fluttertoast.showToast(
+                                    msg: "Erro ao cadastrar dados");
+                              }).whenComplete(() {
+                                setState(() {
+                                  _registerUserViewModel.busy = false;
+                                });
+                              });
+
+                              // TO-DO: ENDIF
+                              // UserModel _user = UserModel();
+                              // _user.setStrDisplayName = _name.text.toLowerCase();
+                              // _user.setStrLogin = _email.text.toLowerCase();
+                              // _user.setStrPassword = _password.text;
+                              // _user.setStrAddress = _address.text.toLowerCase();
+
+                              // // TO-DO: invocar POST em USER só depois da PhonePage.
+                              // if (await _registerUser(_user)) {
+                              //   Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //       builder: (context) => PhonePage(),
+                              //     ),
+                              //   );
+                              // } else {
+                              //   Fluttertoast.showToast(
+                              //       msg: "Erro ao cadastrar dados");
+                              // }
+                            },
+                          ),
+                        ),
                       ),
-                      onPressed: () async {
-                        // TO-DO: refatorar para invocar método de construção e tratar demais atributos de User.
-                        // TO-DO: IF todos os inputs estão válidos THEN
-                        // TO-DO: Trazer POST em USER quando a view Phone Page ficar pronta.
-                        // TO-DO: inviabilizar /t (por exemplo) em campos de input.
-                        _registerUserViewModel.email = _email.text;
-                        _registerUserViewModel.password = _password.text;
-                        _registerUserViewModel.name = _name.text;
-                        _registerUserViewModel.cep = _cep.text;
-                        _registerUserViewModel.address = _address.text;
-
-                        _userController.post(_registerUserViewModel)
-                          .then((data){
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => PhonePage(),
-                            ));
-                          })
-                          .catchError((data){
-                            Fluttertoast.showToast(
-                              msg: "Erro ao cadastrar dados");
-                          });
-
-                        // TO-DO: ENDIF
-                        // UserModel _user = UserModel();
-                        // _user.setStrDisplayName = _name.text.toLowerCase();
-                        // _user.setStrLogin = _email.text.toLowerCase();
-                        // _user.setStrPassword = _password.text;
-                        // _user.setStrAddress = _address.text.toLowerCase();
-
-                        // // TO-DO: invocar POST em USER só depois da PhonePage.
-                        // if (await _registerUser(_user)) {
-                        //   Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //       builder: (context) => PhonePage(),
-                        //     ),
-                        //   );
-                        // } else {
-                        //   Fluttertoast.showToast(
-                        //       msg: "Erro ao cadastrar dados");
-                        // }
-                      },
-                    ),
-                  ),
-                ),
               ]),
             ),
           ],
@@ -511,7 +529,7 @@ class _RegisterUserState extends State<RegisterUser> {
   //   }
 
   //   return _status;
-    
+
   // }
-  
+
 }
