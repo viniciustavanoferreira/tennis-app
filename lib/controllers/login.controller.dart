@@ -28,7 +28,7 @@ class LoginController {
     // TO-DO: try to avoid instantiate twice a regex's object.
     RegExp regex = new RegExp(
         // Mínimo de 8 carac., podendo ser especial, caixa maior, caixa menor ou número.
-        r"^[A-Za-z0-9@$!%*#?&]{8,}"
+        r"^[A-Za-z0-9_.@$!%*#?&]{8,}"
 
         // Mínimo de 8 carac., ao menos 1 núm. e 1 letra.
         // r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
